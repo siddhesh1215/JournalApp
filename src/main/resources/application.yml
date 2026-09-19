@@ -1,0 +1,47 @@
+spring:
+  redis:
+    url: ${REDIS_URI}
+
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+      #      uri: mongodb://localhost:27017/
+      database: journaldb
+      auto-index-creation: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # Kafka Configuration (PLAINTEXT, no auth)
+  kafka:
+    bootstrap-servers: localhost:9092   # or localhost:9092 if app runs on same machine
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: weekly.sentiment.grp
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.journal.Journal.model
+    properties:
+      security:
+        protocol: PLAINTEXT
+
+#weather:
+#  api:
+#    key: fbd40a016addc88a2fb8ad950326cee9
+
+server:
+  port: 8081
